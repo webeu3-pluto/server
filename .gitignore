@@ -1,0 +1,8 @@
+node_modules
+.DS_Store
+## vscode directory
+.vscode/
+## environment variables
+.env
+## log files
+*.log
