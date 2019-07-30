@@ -3,11 +3,14 @@ const helmet = require('helmet');
 const cors = require('cors');
 
 const server = express();
+const authRouter = require('./authentication/authRouter');
+const { validateUser } = require('./helpers/middlware');
 
 server.use(express.json());
 server.use(helmet());
 server.use(cors());
 
+server.use('/api/auth', validateUser, authRouter);
 
 server.get('/', (req, res) => {
    try {
