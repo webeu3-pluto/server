@@ -34,7 +34,7 @@ module.exports = {
          res.status(400).json({ message: 'Please supply user data!' })
       };
    },
-   restrict: function (req, rex, next) {
+   restrict: function (req, res, next) {
       const token = req.headers.authorization;
       if (token) {
          jwt.verify(token, secret.jwtSecret, (err, decodedToken) => {
