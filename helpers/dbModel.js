@@ -13,6 +13,12 @@ module.exports = {
          .first();
    },
 
+   getUserByEmail: function (email) {
+      return db('users')
+         .select('id', 'firstName', 'lastName', 'email', 'role', 'cohort')
+         .where('email', email);
+   },
+
    getBy: function (filter) {
       return db('users')
          .where(filter);
@@ -30,5 +36,20 @@ module.exports = {
          .then(([id]) => {
             return this.getUserById(id);
          });
+   },
+
+   updateUser: function (email, changes) {
+      return db('users')
+         .where({ email })
+         .update(changes)
+         .then(() => {
+            return this.getUserByEmail(email);
+         });
+   },
+
+   deleteUser: function (email) {
+      return db('users')
+         .where({ email })
+         .del()
    }
 }
