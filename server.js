@@ -4,7 +4,8 @@ const cors = require('cors');
 
 const server = express();
 const authRouter = require('./authentication/authRouter');
-const mainRouter = require('./main/mainRouter');
+const profileRouter = require('./profile/profileRouter');
+const teamleadRouter = require('./teamlead/teamleadRouter');
 const { validateUser, restrict } = require('./helpers/middlware');
 
 server.use(express.json());
@@ -12,7 +13,8 @@ server.use(helmet());
 server.use(cors());
 
 server.use('/api/auth', validateUser, authRouter);
-server.use('/api/restricted', restrict, mainRouter);
+server.use('/api/profile', restrict, profileRouter);
+server.use('/api/teamlead', restrict, teamleadRouter);
 
 server.get('/', (req, res) => {
    try {
