@@ -16,7 +16,17 @@ module.exports = {
    getUserByEmail: function (email) {
       return db('users')
          .select('id', 'firstName', 'lastName', 'email', 'role', 'cohort')
-         .where('email', email);
+         .where('email', email)
+         .first();
+   },
+
+   getAllStudentsByCohort: function (cohort) {
+      return db('users')
+         .select('id', 'firstName', 'lastName', 'email', 'role', 'cohort')
+         .where({
+            role: 'Student',
+            cohort: cohort
+         });
    },
 
    getBy: function (filter) {
@@ -36,6 +46,11 @@ module.exports = {
          .then(([id]) => {
             return this.getUserById(id);
          });
+   },
+
+   insertTeamleadStudent: function (user) {
+      return db('teamleadStudents')
+         .insert(user);
    },
 
    updateUser: function (email, changes) {
