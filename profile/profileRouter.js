@@ -11,7 +11,7 @@ router.put('/user', async (req, res) => {
          user
       });
    } catch (error) {
-      res.status(500).json('Oops! We missed that. Hang on, let\'s fix it together');
+      res.status(500).json({ message: error.message });
    }
 });
 
@@ -23,7 +23,7 @@ router.delete('/user', async (req, res) => {
          message: 'User data successfully deleted'
       })
    } catch (error) {
-      res.status(500).json('Oops! We missed that. Hang on, let\'s fix it together');
+      res.status(500).json({ message: error.message });
    }
 });
 

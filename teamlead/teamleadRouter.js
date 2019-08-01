@@ -8,7 +8,7 @@ router.get('/students', async (req, res) => {
       const users = await Users.getAllStudentsByCohort(token.cohort);
       res.status(200).json(users)
    } catch (error) {
-      res.status(500).json('Oops! We missed that. Hang on, let\'s fix it together');
+      res.status(500).json({ message: error.message });
    }
 })
 
@@ -24,7 +24,7 @@ router.post('/students', async (req, res) => {
          message: 'New entry successfully created!'
       })
    } catch (error) {
-      res.status(500).json('Oops! We missed that. Hang on, let\'s fix it together');
+      res.status(500).json({ message: error.message });
    }
 })
 
