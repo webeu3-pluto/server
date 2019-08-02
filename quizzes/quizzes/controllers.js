@@ -10,6 +10,11 @@ module.exports = {
       } else {
         quiz.completionRate *= 100;
       }
+      if (quiz.status === 1) {
+        quiz.status = 'Active'
+      } else {
+        quiz.status = 'Draft'
+      }
       return quiz;
     });
     return formattedQuizzes;
