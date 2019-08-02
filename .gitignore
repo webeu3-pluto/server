@@ -7,4 +7,5 @@ node_modules
 ## log files
 *.log
 
+## exclude db
 *.db3
