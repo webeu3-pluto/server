@@ -65,6 +65,12 @@ module.exports = {
    deleteUser: function (email) {
       return db('users')
          .where({ email })
-         .del()
+         .del();
+   },
+
+   deleteTeamleadStudent: function (user) {
+      return db('teamleadStudents')
+         .where(user)
+         .del();
    }
 }
