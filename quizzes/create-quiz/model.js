@@ -10,7 +10,9 @@ module.exports = {
       .select(
         "uuid",
         "categories.name AS category",
+        "categories.id as categoryId",
         "subcategories.name as subCategory",
+        "subcategories.id as subCategoryId",
         "published as status"
       )
       .first();
