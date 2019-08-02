@@ -15,4 +15,15 @@ router.get("/:uuid", async (req, res) => {
   }
 });
 
+router.post("/:uuid", async (req, res) => {
+  try {
+    const { uuid, teamLeadId } = req.body;
+    console.log(uuid, teamLeadId)
+    const createdQuiz = await Controllers.createQuizAndQsByUUID(teamLeadId, uuid);
+    res.status(201).json(createdQuiz)
+  } catch(err) {
+    res.send(err.message);
+  }
+});
+
 module.exports = router;

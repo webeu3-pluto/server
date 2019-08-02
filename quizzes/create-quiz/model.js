@@ -28,13 +28,13 @@ module.exports = {
         "answer"
       )
       .where({ uuid });
+  },
+  createQuiz: function(quiz) {
+    return db('quiz').insert(quiz).then(() => this.getQuizByUUID(quiz.uuid));
   }
 
   /*
-    SELECT questionAnswers.id, question, p_answer1, p_answer2, p_answer3, answer
-    FROM quiz
-    JOIN questionAnswers
-    ON questionAnswers.quiz_id = quiz.id
-    WHERE uuid="5245ed69-a51c-4bf0-91c4-5a08c914fd08"
+    INSERT INTO quiz (uuid, cat_id, subcat_id, teamlead_id, published)
+    VALUES ('5ea5fc67-c4aa-4f4a-94ee-7af6a65f69da', 1, 1, 1, 0);
   */
 };
