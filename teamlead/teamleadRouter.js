@@ -28,4 +28,19 @@ router.post('/students', async (req, res) => {
    }
 })
 
+router.delete('/students', async (req, res) => {
+   try {
+      const token = req.decodedToken;
+      const teamlead = await Users.getUserByEmail(token.email);
+      await Users.deleteTeamleadStudent({
+         teamlead_id: teamlead.id,
+         student_id: req.body.id
+      });
+      res.status(200).json({
+         message: 'Student has been successfully removed from your list'
+      })
+   } catch (error) {
+      res.status(500).json({ message: error.message });
+   }
+})
 module.exports = router;
