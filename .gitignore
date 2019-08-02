@@ -7,4 +7,4 @@ node_modules
 ## log files
 *.log
 
-**/*.db3
+*.db3

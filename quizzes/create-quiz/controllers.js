@@ -29,5 +29,11 @@ module.exports = {
 
     const questions = await CreateQuiz.createQuestion(sampleQuestion);
     return {...createdQuiz, questions}
+  },
+  getCategories: async function() {
+    return await CreateQuiz.getCategories();
+  },
+  getSubCategories: async function(id) {
+    return await CreateQuiz.getSubcatsByCategory(id);
   }
 }

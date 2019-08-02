@@ -43,11 +43,13 @@ module.exports = {
     return db("questionAnswers")
       .insert(question)
       .then(([id]) => this.getQuestionByID(id));
+  },
+  getCategories: function() {
+    return db("categories").select("id as categoryId", "name as category");
+  },
+  getSubcatsByCategory: function(id) {
+    return db("subcategories")
+      .where({ cat_id: id })
+      .select("id as subCategoryId", "name as categoryId");
   }
-
-  /*
-    INSERT INTO questionAnswers (question, p_answer1, p_answer2, p_answer3, answer, quiz_id)
-    VALUES ('This is your first question', 'This is an incorrect answer', 'This is an incorrect answer', 'This is an incorrect answer', 'This is an correct answer', 1);
-
-  */
 };

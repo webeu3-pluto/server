@@ -1,6 +1,24 @@
 const router = require("express").Router();
 const Controllers = require("./controllers");
 
+router.get('/categories', async (req, res) => {
+  try {
+    const categories = await Controllers.getCategories();
+    res.status(200).json(categories);
+  } catch (err) {
+
+  }
+})
+
+router.get('/subcategories/:id', async (req, res) => {
+  try {
+    const subcategories = await Controllers.getSubCategories(req.params.id);
+    res.status(200).json(subcategories);
+  } catch (err) {
+
+  }
+})
+
 router.get("/:uuid", async (req, res) => {
   try {
     const { uuid } = req.params;
