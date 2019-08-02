@@ -2,6 +2,7 @@
 exports.up = function (knex) {
    return knex.schema.createTable('quiz', quiz => {
       quiz.increments();
+      quiz.string('uuid', 128).notNullable().unique();
       quiz
          .integer('cat_id')
          .unsigned()
