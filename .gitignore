@@ -6,3 +6,5 @@ node_modules
 .env
 ## log files
 *.log
+
+*.db3
