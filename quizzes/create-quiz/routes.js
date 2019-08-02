@@ -8,8 +8,8 @@ router.get("/", async (req, res) => {
 router.get("/:uuid", async (req, res) => {
   try {
     const { uuid } = req.params;
-    const quiz = await Controllers.getQuizAndQsByUUID(uuid);
-    res.status(200).json(quiz);
+    const quizAndQs = await Controllers.getQuizAndQsByUUID(uuid);
+    res.status(200).json(quizAndQs);
   } catch (err) {
     res.send(err);
   }
