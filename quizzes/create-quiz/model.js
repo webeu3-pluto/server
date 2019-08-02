@@ -29,12 +29,23 @@ module.exports = {
       )
       .where({ uuid });
   },
+  getQuestionByID: function(id) {
+    return db("questionAnswers").where({ id });
+  },
   createQuiz: function(quiz) {
-    return db('quiz').insert(quiz).then(() => this.getQuizByUUID(quiz.uuid));
+    return db("quiz")
+      .insert(quiz)
+      .then(([id]) => id);
+  },
+  createQuestion: function(question) {
+    return db("questionAnswers")
+      .insert(question)
+      .then(([id]) => this.getQuestionByID(id));
   }
 
   /*
-    INSERT INTO quiz (uuid, cat_id, subcat_id, teamlead_id, published)
-    VALUES ('5ea5fc67-c4aa-4f4a-94ee-7af6a65f69da', 1, 1, 1, 0);
+    INSERT INTO questionAnswers (question, p_answer1, p_answer2, p_answer3, answer, quiz_id)
+    VALUES ('This is your first question', 'This is an incorrect answer', 'This is an incorrect answer', 'This is an incorrect answer', 'This is an correct answer', 1);
+
   */
 };
