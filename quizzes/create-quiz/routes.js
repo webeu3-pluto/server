@@ -56,4 +56,17 @@ router.put("/:uuid/categories", async (req, res) => {
   }
 });
 
+router.put("/:uuid/published", async (req, res) => {
+  try {
+    const { published, uuid } = req.body;
+    const updatedQuiz = await Controllers.updateStatusOfQuiz(
+      published,
+      uuid
+    );
+    res.status(200).json(updatedQuiz);
+  } catch (err) {
+    res.send(err.message);
+  }
+});
+
 module.exports = router;

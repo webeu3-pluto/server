@@ -57,5 +57,11 @@ module.exports = {
       .where({ uuid })
       .update({ cat_id, subcat_id })
       .then(() => this.getQuizByUUID(uuid));
+  },
+  updateStatusOfQuiz: function(published, uuid) {
+    return db("quiz")
+      .where({ uuid })
+      .update({ published })
+      .then(() => this.getQuizByUUID(uuid));
   }
 };
