@@ -42,8 +42,9 @@ router.post("/:uuid", async (req, res) => {
   }
 });
 
-router.post('/question', async (req, res) => {
+router.post('/question/new', async (req, res) => {
   try {
+    console.log('executed')
     const createdQuestion = await Controllers.postQuestion(req.body);
     res.status(201).json(createdQuestion);
   } catch (err) {

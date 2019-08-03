@@ -50,6 +50,7 @@ module.exports = {
     return await CreateQuiz.deleteQuizByUUID(uuid);
   },
   postQuestion: async function(question) {
+    console.log(question)
     return await CreateQuiz.createQuestion(question);
   }
 };
