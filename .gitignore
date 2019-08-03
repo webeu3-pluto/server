@@ -9,3 +9,5 @@ node_modules
 
 ## exclude db
 *.db3
+
+package-lock.json
