@@ -63,5 +63,11 @@ module.exports = {
       .where({ uuid })
       .update({ published })
       .then(() => this.getQuizByUUID(uuid));
+  },
+  deleteQuizQuestion: function(id, uuid) {
+    return db("questionAnswers")
+      .where({ id })
+      .del()
+      .then(() => this.getQuestionsByUUID(uuid));
   }
 };

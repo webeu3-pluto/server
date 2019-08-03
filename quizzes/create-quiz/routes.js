@@ -69,4 +69,14 @@ router.put("/:uuid/published", async (req, res) => {
   }
 });
 
+router.delete('/question/:id', async (req, res) => {
+  try {
+    const { id, uuid } = req.body;
+    const updatedQuiz = await Controllers.deleteQuestionOnQuiz(id, uuid);
+    res.status(200).json(updatedQuiz);
+  } catch (err) {
+    res.send(err.message);
+  }
+})
+
 module.exports = router;
