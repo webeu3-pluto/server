@@ -69,5 +69,8 @@ module.exports = {
       .where({ id })
       .del()
       .then(() => this.getQuestionsByUUID(uuid));
+  }, 
+  deleteQuizByUUID: function(uuid) {
+    return db('quiz').where({ uuid }).del();
   }
 };

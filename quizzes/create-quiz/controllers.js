@@ -45,5 +45,8 @@ module.exports = {
   },
   deleteQuestionOnQuiz: async function(id, uuid) {
     return await CreateQuiz.deleteQuizQuestion(id, uuid);
+  },
+  deleteQuiz: async function(uuid) {
+    return await CreateQuiz.deleteQuizByUUID(uuid);
   }
 };

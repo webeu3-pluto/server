@@ -59,17 +59,14 @@ router.put("/:uuid/categories", async (req, res) => {
 router.put("/:uuid/published", async (req, res) => {
   try {
     const { published, uuid } = req.body;
-    const updatedQuiz = await Controllers.updateStatusOfQuiz(
-      published,
-      uuid
-    );
+    const updatedQuiz = await Controllers.updateStatusOfQuiz(published, uuid);
     res.status(200).json(updatedQuiz);
   } catch (err) {
     res.send(err.message);
   }
 });
 
-router.delete('/question/:id', async (req, res) => {
+router.delete("/question/:id", async (req, res) => {
   try {
     const { id, uuid } = req.body;
     const updatedQuiz = await Controllers.deleteQuestionOnQuiz(id, uuid);
@@ -77,6 +74,16 @@ router.delete('/question/:id', async (req, res) => {
   } catch (err) {
     res.send(err.message);
   }
-})
+});
+
+router.delete("/", async (req, res) => {
+  try {
+    const { uuid } = req.body;
+    await Controllers.deleteQuiz(uuid);
+    res.status(200).json({ message: "Quiz deleted" });
+  } catch (err) {
+    res.send(err.message);
+  }
+});
 
 module.exports = router;
