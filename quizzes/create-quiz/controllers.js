@@ -35,5 +35,8 @@ module.exports = {
   },
   getSubCategories: async function(id) {
     return await CreateQuiz.getSubcatsByCategory(id);
+  },
+  updateQuizByCatandSubcat: async function(cat_id, subcat_id, uuid) {
+    return await CreateQuiz.updateCatAndSubcatForQuiz(cat_id, subcat_id, uuid)
   }
 }

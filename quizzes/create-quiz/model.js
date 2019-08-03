@@ -50,6 +50,12 @@ module.exports = {
   getSubcatsByCategory: function(id) {
     return db("subcategories")
       .where({ cat_id: id })
-      .select("id as subCategoryId", "name as categoryId");
+      .select("id as subCategoryId", "name as subCategoryName");
+  },
+  updateCatAndSubcatForQuiz: function(cat_id, subcat_id, uuid) {
+    return db("quiz")
+      .where({ uuid })
+      .update({ cat_id, subcat_id })
+      .then(() => this.getQuizByUUID(uuid));
   }
 };
