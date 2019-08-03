@@ -72,5 +72,5 @@ module.exports = {
   }, 
   deleteQuizByUUID: function(uuid) {
     return db('quiz').where({ uuid }).del();
-  }
+  },
 };

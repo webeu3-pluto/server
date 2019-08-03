@@ -42,6 +42,15 @@ router.post("/:uuid", async (req, res) => {
   }
 });
 
+router.post('/question', async (req, res) => {
+  try {
+    const createdQuestion = await Controllers.postQuestion(req.body);
+    res.status(201).json(createdQuestion);
+  } catch (err) {
+    res.send(err.message);
+  }
+})
+
 router.put("/:uuid/categories", async (req, res) => {
   try {
     const { uuid, cat_id, subcat_id } = req.body;
