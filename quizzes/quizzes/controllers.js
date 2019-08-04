@@ -31,7 +31,7 @@ module.exports = {
       quiz.teamLead = `${quiz.firstName} ${quiz.lastName}`
       return quiz;
     })
-    const filteredQuizzes = quizzes.filter(quiz => quiz.published === 1)
+    const filteredQuizzes = formattedQuizzes.filter(quiz => quiz.published === 1)
     return filteredQuizzes;
   }
 };
