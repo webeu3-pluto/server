@@ -24,6 +24,7 @@ module.exports = {
     SELECT
       uuid,
       quiz.id,
+      quiz.published,
       subcategories.name as quiz,
       firstName,
       lastName,
