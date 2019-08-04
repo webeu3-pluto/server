@@ -54,9 +54,8 @@ router.post('/question/new', async (req, res) => {
 router.put('/question/:uuid/:id', async (req, res) => {
   try {
     const { id, uuid } = req.params; // id of question, uuid of quiz
-    const { question } = req.body;
-    const questions = await Controllers.updateQuestion(question, id, uuid);
-    res.send(200).json(questions);
+    const questions = await Controllers.updateQuestion(req.body, id, uuid);
+    res.status(200).json(questions);
   } catch (err) {
     res.send(err.message);
   }
