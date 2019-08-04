@@ -18,5 +18,18 @@ module.exports = {
       return quiz;
     });
     return formattedQuizzes;
+  },
+  getQuizzesByStudentId: async function(id) {
+    const quizzes = await Quizzes.findQuizzesByStudentId(id);
+    const formattedQuizzes = quizzes.map(quiz => {
+      if (quiz.score === null) quiz.score = 0;
+      if (quiz.status === 1) {
+        quiz.status = 'Complete'
+      } else {
+        quiz.status = 'Incomplete'
+      }
+      return quiz;
+    })
+    return formattedQuizzes;
   }
 };
