@@ -8,6 +8,7 @@ module.exports = {
       .join("subcategories", "subcategories.id", "quiz.subcat_id")
       .where({ uuid })
       .select(
+        "quiz.id",
         "uuid",
         "categories.name AS category",
         "categories.id as categoryId",
@@ -69,8 +70,16 @@ module.exports = {
       .where({ id })
       .del()
       .then(() => this.getQuestionsByUUID(uuid));
-  }, 
-  deleteQuizByUUID: function(uuid) {
-    return db('quiz').where({ uuid }).del();
   },
+  updateQuizQuestion: function(question, id, uuid) {
+    return db("questionAnswers")
+      .where({ id })
+      .update(question)
+      .then(() => this.getQuestionsByUUID(uuid));
+  },
+  deleteQuizByUUID: function(uuid) {
+    return db("quiz")
+      .where({ uuid })
+      .del();
+  }
 };

@@ -44,12 +44,23 @@ router.post("/:uuid", async (req, res) => {
 
 router.post('/question/new', async (req, res) => {
   try {
-    console.log('executed')
     const createdQuestion = await Controllers.postQuestion(req.body);
     res.status(201).json(createdQuestion);
   } catch (err) {
     res.send(err.message);
   }
+})
+
+router.put('/question/:uuid/:id', async (req, res) => {
+  try {
+    const { id, uuid } = req.params; // id of question, uuid of quiz
+    const { question } = req.body;
+    const questions = await Controllers.updateQuestion(question, id, uuid);
+    res.send(200).json(questions);
+  } catch (err) {
+    res.send(err.message);
+  }
+
 })
 
 router.put("/:uuid/categories", async (req, res) => {
