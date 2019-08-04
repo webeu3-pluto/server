@@ -23,7 +23,7 @@ module.exports = {
     return db.raw(`
     SELECT
       uuid,
-      quiz.id as quizId,
+      quiz.id,
       subcategories.name as quiz,
       firstName,
       lastName,
@@ -40,7 +40,6 @@ module.exports = {
     JOIN users
     ON users.id = teamleadStudents.teamlead_id
     WHERE teamleadStudents.student_id = ${id}
-    
 `)
   },
 };

@@ -28,6 +28,7 @@ module.exports = {
       } else {
         quiz.status = 'Incomplete'
       }
+      quiz.teamLead = `${quiz.firstName} ${quiz.lastName}`
       return quiz;
     })
     return formattedQuizzes;
