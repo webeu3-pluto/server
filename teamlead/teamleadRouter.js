@@ -1,27 +1,13 @@
 const router = require('express').Router();
 
 const Users = require('../helpers/dbModel');
-
-router.get('/students', async (req, res) => {
-   try {
-      const token = req.decodedToken;
-      const users = await Users.getAllStudentsByCohort(token.cohort);
-      res.status(200).json(users)
-   } catch (error) {
-      res.status(500).json({ message: error.message });
-   }
-});
+const { modifier } = require('../helpers/middlware');
 
 router.get('/students/data', async (req, res) => {
    try {
       const token = req.decodedToken;
       const students = await Users.getTeamleadStudents(token.email)
-      const studentsMod = students.map(student => {
-         student.fullName = student.firstName + ' ' + student.lastName
-         delete student.firstName
-         delete student.lastName
-         return student;
-      })
+      const studentsMod = modifier(students);
       res.status(200).json(studentsMod);
    } catch (error) {
       res.status(500).json({ message: error.message });
@@ -53,12 +39,7 @@ router.delete('/students', async (req, res) => {
          student_id: req.body.id
       });
       const students = await Users.getTeamleadStudents(token.email)
-      const studentsMod = students.map(student => {
-         student.fullName = student.firstName + ' ' + student.lastName
-         delete student.firstName
-         delete student.lastName
-         return student;
-      })
+      const studentsMod = modifier(students)
       res.status(200).json({
          message: 'Student has been successfully removed from your list',
          students: studentsMod

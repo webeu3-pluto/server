@@ -20,11 +20,11 @@ module.exports = {
          .first();
    },
 
-   getAllStudentsByCohort: function (cohort) {
+   getAllByCohort: function (role, cohort) {
       return db('users')
          .select('id', 'firstName', 'lastName', 'email', 'role', 'cohort')
          .where({
-            role: 'Student',
+            role: role,
             cohort: cohort
          });
    },

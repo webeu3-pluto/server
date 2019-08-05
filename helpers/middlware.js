@@ -48,6 +48,16 @@ module.exports = {
       } else {
          res.status(400).json({ message: 'Please supply token!' })
       };
+   },
+
+   modifier: function (arrayObj) {
+      arrayObj.map(obj => {
+         obj.fullName = obj.firstName + ' ' + obj.lastName
+         delete obj.firstName
+         delete obj.lastName
+         return obj;
+      })
+      return arrayObj
    }
 };
 
