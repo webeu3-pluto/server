@@ -6,6 +6,7 @@ const server = express();
 const authRouter = require('./authentication/authRouter');
 const profileRouter = require('./profile/profileRouter');
 const teamleadRouter = require('./teamlead/teamleadRouter');
+const quizzesRouter = require('./quizzes')
 const { validateUser, restrict } = require('./helpers/middlware');
 
 server.use(express.json());
@@ -15,6 +16,7 @@ server.use(cors());
 server.use('/api/auth', validateUser, authRouter);
 server.use('/api/profile', restrict, profileRouter);
 server.use('/api/teamlead', restrict, teamleadRouter);
+server.use('/api/quizzes', restrict, quizzesRouter), 
 
 server.get('/', (req, res) => {
    try {
