@@ -2,16 +2,6 @@ const router = require('express').Router();
 
 const Users = require('../helpers/dbModel');
 
-router.get('/students', async (req, res) => {
-   try {
-      const token = req.decodedToken;
-      const users = await Users.getAllStudentsByCohort(token.cohort);
-      res.status(200).json(users)
-   } catch (error) {
-      res.status(500).json({ message: error.message });
-   }
-});
-
 router.get('/students/data', async (req, res) => {
    try {
       const token = req.decodedToken;
