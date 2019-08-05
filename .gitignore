@@ -6,3 +6,9 @@ node_modules
 .env
 ## log files
 *.log
+
+## exclude db
+*.db3
+
+## exclude txt files
+*.txt
