@@ -29,6 +29,18 @@ module.exports = {
          });
    },
 
+   getTeamleadStudents: function (teamleadEmail) {
+      return db('teamleadStudents as ts')
+         .select('u.id', 'u.firstName', 'u.lastName')
+         .sum('completed', { as: 'quizzes' })
+         .avg('result', { as: 'score' })
+         .leftJoin('users as u', 'u.id', 'ts.student_id')
+         .leftJoin('users as us', 'us.id', 'ts.teamlead_id')
+         .leftJoin('studentQuiz as sq', 'u.id', 'sq.student_id')
+         .where('us.email', teamleadEmail)
+         .groupBy('sq.student_id');
+   },
+
    getBy: function (filter) {
       return db('users')
          .where(filter);
