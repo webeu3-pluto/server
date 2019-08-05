@@ -19,7 +19,8 @@ exports.seed = function (knex) {
         { uuid: uuid(), cat_id: 1, subcat_id: 1, teamlead_id: 15, published: true },
         { uuid: uuid(), cat_id: 1, subcat_id: 1, teamlead_id: 15, published: false },
         { uuid: uuid(), cat_id: 1, subcat_id: 1, teamlead_id: 19, published: true },
-        { uuid: uuid(), cat_id: 1, subcat_id: 1, teamlead_id: 19, published: false }
+        { uuid: uuid(), cat_id: 1, subcat_id: 1, teamlead_id: 19, published: false },
+        { uuid: uuid(), cat_id: 1, subcat_id: 1, teamlead_id: 3, published: true }
       ]);
     });
 };

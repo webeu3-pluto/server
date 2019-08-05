@@ -47,6 +47,9 @@ exports.seed = function (knex) {
         { question: 'What’s the difference between justice and revenge?', p_answer1: 'possible', p_answer2: 'possible', p_answer3: 'possible', answer: 'here is the answer', quiz_id: 14 },
         { question: 'What’s the most amazing place in nature you’ve been?', p_answer1: 'possible', p_answer2: 'possible', p_answer3: 'possible', answer: 'here is the answer', quiz_id: 14 },
         { question: 'What’s the worst injury you’ve ever gotten?', p_answer1: 'possible', p_answer2: 'possible', p_answer3: 'possible', answer: 'here is the answer', quiz_id: 14 },
+        { question: 'What’s the best type of cheese?', p_answer1: 'possible', p_answer2: 'possible', p_answer3: 'possible', answer: 'here is the answer', quiz_id: 15 },
+        { question: 'What was one of the best days of your life?', p_answer1: 'possible', p_answer2: 'possible', p_answer3: 'possible', answer: 'here is the answer', quiz_id: 15 },
+        { question: 'What is the best room in your house? Why?', p_answer1: 'possible', p_answer2: 'possible', p_answer3: 'possible', answer: 'here is the answer', quiz_id: 15 },
       ]);
     });
 };

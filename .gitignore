@@ -10,4 +10,6 @@ node_modules
 ## exclude db
 *.db3
 
+## exclude txt files
+*.txt
 package-lock.json

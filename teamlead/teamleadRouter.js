@@ -10,7 +10,23 @@ router.get('/students', async (req, res) => {
    } catch (error) {
       res.status(500).json({ message: error.message });
    }
-})
+});
+
+router.get('/students/data', async (req, res) => {
+   try {
+      const token = req.decodedToken;
+      const students = await Users.getTeamleadStudents(token.email)
+      const studentsMod = students.map(student => {
+         student.fullName = student.firstName + ' ' + student.lastName
+         delete student.firstName
+         delete student.lastName
+         return student;
+      })
+      res.status(200).json(studentsMod);
+   } catch (error) {
+      res.status(500).json({ message: error.message });
+   }
+});
 
 router.post('/students', async (req, res) => {
    try {
@@ -26,7 +42,7 @@ router.post('/students', async (req, res) => {
    } catch (error) {
       res.status(500).json({ message: error.message });
    }
-})
+});
 
 router.delete('/students', async (req, res) => {
    try {
@@ -36,11 +52,20 @@ router.delete('/students', async (req, res) => {
          teamlead_id: teamlead.id,
          student_id: req.body.id
       });
+      const students = await Users.getTeamleadStudents(token.email)
+      const studentsMod = students.map(student => {
+         student.fullName = student.firstName + ' ' + student.lastName
+         delete student.firstName
+         delete student.lastName
+         return student;
+      })
       res.status(200).json({
-         message: 'Student has been successfully removed from your list'
+         message: 'Student has been successfully removed from your list',
+         students: studentsMod
       })
    } catch (error) {
       res.status(500).json({ message: error.message });
    }
-})
+});
+
 module.exports = router;

@@ -21,5 +21,4 @@ router.get('/students/:id/', async (req, res) => {
   }
 });
 
-
 module.exports = router;
