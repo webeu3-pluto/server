@@ -12,3 +12,4 @@ node_modules
 
 ## exclude txt files
 *.txt
+package-lock.json

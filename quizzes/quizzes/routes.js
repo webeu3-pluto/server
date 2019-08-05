@@ -11,5 +11,14 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get('/students/:id/', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const quizzes = await Controllers.getQuizzesByStudentId(id);
+    res.status(200).json(quizzes);
+  } catch (err) {
+    res.send(err.message);
+  }
+});
 
 module.exports = router;
