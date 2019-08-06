@@ -14,6 +14,23 @@ router.get('/students/data', async (req, res) => {
    }
 });
 
+router.get('/summary', async (req, res) => {
+   try {
+      const token = req.decodedToken;
+      const students = await Users.getTeamleadStudents(token.email);
+      const { quizzesCreated } = await Users.getTeamleadQuizCount(token.email);
+      const { submitted, total, avgStudentScore } = await Users.getTeamleadCompletions(token.email)
+      res.status(200).json({
+         students: students.length,
+         quizzesCreated,
+         completionRate: Math.round((submitted / total) * 100),
+         avgStudentScore: Math.round(avgStudentScore)
+      });
+   } catch (error) {
+      res.status(500).json({ message: error.message });
+   }
+});
+
 router.post('/students', async (req, res) => {
    try {
       const token = req.decodedToken;
