@@ -56,6 +56,55 @@ module.exports = {
          .groupBy('ts.teamlead_id');
    },
 
+   getTeamleadQuizCount: function (teamleadEmail) {
+      return db('quiz as q')
+         .countDistinct('q.id', { as: 'quizzesCreated' })
+         .leftJoin('users as u', 'u.id', 'q.teamlead_id')
+         .where({
+            'u.email': teamleadEmail,
+            'published': 1
+         })
+         .first();
+   },
+
+   getStudentTeamleadQuizCount: function (studentEmail) {
+      return db('teamleadStudents as ts')
+         .count('q.id', { as: 'quizzesCreated' })
+         .leftJoin('users as u', 'u.id', 'ts.student_id')
+         .leftJoin('users as us', 'us.id', 'ts.teamlead_id')
+         .leftJoin('quiz as q', 'q.teamlead_id', 'ts.teamlead_id')
+         .where({
+            'u.email': studentEmail,
+            'published': 1
+         })
+         .first();
+
+   },
+
+   getTeamleadCompletions: function (teamleadEmail) {
+      return db('quiz as q')
+         .sum('completed', { as: 'submitted' })
+         .count('completed', { as: 'total' })
+         .avg('result', { as: 'avgStudentScore' })
+         .leftJoin('users as u', 'u.id', 'q.teamlead_id')
+         .leftJoin('studentQuiz as sq', 'q.id', 'sq.quiz_id')
+         .where({
+            'u.email': teamleadEmail,
+            'published': 1
+         })
+         .first();
+   },
+
+   getStudentCompletions: function (studentEmail) {
+      return db('studentQuiz as sq')
+         .sum('completed', { as: 'submitted' })
+         .count('completed', { as: 'total' })
+         .avg('result', { as: 'avgQuizScore' })
+         .leftJoin('users as u', 'u.id', 'sq.student_id')
+         .where('u.email', studentEmail)
+         .first();
+   },
+
    getBy: function (filter) {
       return db('users')
          .where(filter);
