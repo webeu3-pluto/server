@@ -53,6 +53,7 @@ module.exports = {
    modifier: function (arrayObj) {
       arrayObj.map(obj => {
          obj.fullName = obj.firstName + ' ' + obj.lastName
+         obj.score = Math.round(obj.score)
          delete obj.firstName
          delete obj.lastName
          return obj;
