@@ -40,6 +40,21 @@ module.exports = {
          .where('us.email', teamleadEmail)
          .groupBy('sq.student_id');
    },
+   getStudentTeamleads: function (studentEmail) {
+      return db('teamleadStudents as ts')
+         .select('u.id', 'u.firstName', 'u.lastName')
+         .countDistinct('q.id', { as: 'quizzes' })
+         .avg('result', { as: 'score' })
+         .leftJoin('users as u', 'u.id', 'ts.teamlead_id')
+         .leftJoin('users as us', 'us.id', 'ts.student_id')
+         .leftJoin('quiz as q', 'q.teamlead_id', 'ts.teamlead_id')
+         .leftJoin('studentQuiz as sq', 'sq.quiz_id', 'q.id')
+         .where({
+            'us.email': studentEmail,
+            'published': 1
+         })
+         .groupBy('ts.teamlead_id');
+   },
 
    getBy: function (filter) {
       return db('users')

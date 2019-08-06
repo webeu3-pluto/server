@@ -3,6 +3,17 @@ const router = require('express').Router();
 const Users = require('../helpers/dbModel');
 const { modifier } = require('../helpers/middlware');
 
+router.get('/teamleads/data', async (req, res) => {
+   try {
+      const token = req.decodedToken;
+      const teamleads = await Users.getStudentTeamleads(token.email)
+      const teamleadsMod = modifier(teamleads);
+      res.status(200).json(teamleadsMod);
+   } catch (error) {
+      res.status(500).json({ message: error.message });
+   }
+});
+
 router.post('/teamleads', async (req, res) => {
    try {
       const token = req.decodedToken;
@@ -27,7 +38,7 @@ router.delete('/teamleads', async (req, res) => {
          student_id: student.id,
          teamlead_id: req.body.id
       });
-      const teamleads = await Users.getTeamleadStudents(token.email)
+      const teamleads = await Users.getStudentTeamleads(token.email)
       const teamleadsMod = modifier(teamleads)
       res.status(200).json({
          message: 'Teamlead has been successfully removed from your list',
