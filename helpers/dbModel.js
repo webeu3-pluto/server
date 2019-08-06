@@ -84,7 +84,7 @@ module.exports = {
    getTeamleadCompletions: function (teamleadEmail) {
       return db('quiz as q')
          .sum('completed', { as: 'submitted' })
-         .count('completed', { as: 'total' })
+         .count('published', { as: 'total' })
          .avg('result', { as: 'avgStudentScore' })
          .leftJoin('users as u', 'u.id', 'q.teamlead_id')
          .leftJoin('studentQuiz as sq', 'q.id', 'sq.quiz_id')
@@ -96,12 +96,18 @@ module.exports = {
    },
 
    getStudentCompletions: function (studentEmail) {
-      return db('studentQuiz as sq')
+      return db('teamleadStudents as ts')
          .sum('completed', { as: 'submitted' })
-         .count('completed', { as: 'total' })
+         .count('published', { as: 'total' })
          .avg('result', { as: 'avgQuizScore' })
-         .leftJoin('users as u', 'u.id', 'sq.student_id')
-         .where('u.email', studentEmail)
+         .leftJoin('users as u', 'u.id', 'ts.student_id')
+         .leftJoin('users as us', 'us.id', 'ts.teamlead_id')
+         .leftJoin('quiz as q', 'q.teamlead_id', 'ts.teamlead_id')
+         .leftJoin('studentQuiz as sq', 'q.id', 'sq.quiz_id')
+         .where({
+            'u.email': studentEmail,
+            'published': 1
+         })
          .first();
    },
 
