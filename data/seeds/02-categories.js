@@ -11,6 +11,8 @@ exports.seed = function (knex) {
         { name: 'Data Science' },
         { name: 'Android Development' },
         { name: 'iOS Development' },
+        { name: 'Computer Science' },
+        { name: 'Data Science Annex' }
       ]);
     });
 };
