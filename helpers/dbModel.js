@@ -82,33 +82,41 @@ module.exports = {
    },
 
    getTeamleadCompletions: function (teamleadEmail) {
-      return db('quiz as q')
-         .sum('completed', { as: 'submitted' })
-         .count('published', { as: 'total' })
-         .avg('result', { as: 'avgStudentScore' })
-         .leftJoin('users as u', 'u.id', 'q.teamlead_id')
-         .leftJoin('studentQuiz as sq', 'q.id', 'sq.quiz_id')
-         .where({
-            'u.email': teamleadEmail,
-            'published': 1
-         })
-         .first();
+      return db.raw(`
+         select sum(completed) as submitted,
+         count(published) as total,
+         avg(result) as avgStudentScore
+         from quiz as q
+         left join users as u
+         on u.id = q.teamlead_id
+         left join teamleadStudents as ts
+         on q.teamlead_id = ts.teamlead_id
+         left join studentQuiz as sq
+         on sq.student_id = ts.student_id
+         AND q.id = sq.quiz_id
+         where u.email = '${teamleadEmail}'
+         and published = 1
+      `)
    },
 
    getStudentCompletions: function (studentEmail) {
-      return db('teamleadStudents as ts')
-         .sum('completed', { as: 'submitted' })
-         .count('published', { as: 'total' })
-         .avg('result', { as: 'avgQuizScore' })
-         .leftJoin('users as u', 'u.id', 'ts.student_id')
-         .leftJoin('users as us', 'us.id', 'ts.teamlead_id')
-         .leftJoin('quiz as q', 'q.teamlead_id', 'ts.teamlead_id')
-         .leftJoin('studentQuiz as sq', 'q.id', 'sq.quiz_id')
-         .where({
-            'u.email': studentEmail,
-            'published': 1
-         })
-         .first();
+      return db.raw(`
+         select sum(completed) as submitted,
+         count(published) as total,
+         avg(ifnull(result, 0)) as avgQuizScore
+         from teamleadStudents as ts
+         left join users as u
+         on u.id = ts.student_id
+         left join users as us
+         on us.id = ts.teamlead_id
+         left join quiz as q
+         on q.teamlead_id = ts.teamlead_id
+         left join studentQuiz as sq
+         on sq.student_id = ts.student_id
+         AND q.id = sq.quiz_id
+         where u.email = '${studentEmail}'
+         and published = 1
+      `)
    },
 
    getBy: function (filter) {
