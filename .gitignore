@@ -8,7 +8,7 @@ node_modules
 *.log
 
 ## exclude db
-*.db3
+##*.db3
 
 ## exclude txt files
 *.txt
