@@ -19,12 +19,12 @@ router.get('/summary', async (req, res) => {
       const token = req.decodedToken;
       const students = await Users.getTeamleadStudents(token.email);
       const { quizzesCreated } = await Users.getTeamleadQuizCount(token.email);
-      const { submitted, total, avgStudentScore } = await Users.getTeamleadCompletions(token.email)
+      const [values] = await Users.getTeamleadCompletions(token.email)
       res.status(200).json({
          students: students.length,
          quizzesCreated,
-         completionRate: Math.round((submitted / total) * 100),
-         avgStudentScore: Math.round(avgStudentScore)
+         completionRate: Math.round((values.submitted / values.total) * 100),
+         avgStudentScore: Math.round(values.avgStudentScore)
       });
    } catch (error) {
       res.status(500).json({ message: error.message });
