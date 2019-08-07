@@ -10,7 +10,7 @@ router.post('/register', async (req, res) => {
    req.body.password = hashed;
    try {
       const { id, firstName, lastName, email, role, cohort } = await Users.insertUser(req.body);
-      res.status(201).json({ message: `Hooray! Welcome Aboard, ${firstName}!!`, id, firstName, lastName, email, role, cohort, token })
+      res.status(201).json({ message: `Hooray! Welcome Aboard, ${firstName}!!`, id, firstName, lastName, email, role, cohort, token });
    }
    catch (error) {
       res.status(500).json('Oops! We missed that. Hang on, let\'s fix it together');

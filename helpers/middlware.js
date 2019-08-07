@@ -28,10 +28,10 @@ module.exports = {
                res.status(401).json({ message: 'Oops! Invalid Credentials' });
             };
          } else {
-            res.status(400).json({ message: 'You are missing some required fields!' })
+            res.status(400).json({ message: 'You are missing some required fields!' });
          };
       } else {
-         res.status(400).json({ message: 'Please supply user data!' })
+         res.status(400).json({ message: 'Please supply user data!' });
       };
    },
    restrict: function (req, res, next) {
@@ -39,14 +39,14 @@ module.exports = {
       if (token) {
          jwt.verify(token, secret.jwtSecret, (err, decodedToken) => {
             if (err) {
-               res.status(401).json({ message: 'Token validation failed!' })
+               res.status(401).json({ message: 'Token validation failed!' });
             } else {
                req.decodedToken = decodedToken;
                next();
             }
          })
       } else {
-         res.status(400).json({ message: 'Please supply token!' })
+         res.status(400).json({ message: 'Please supply token!' });
       };
    },
 
@@ -57,7 +57,7 @@ module.exports = {
          delete obj.firstName
          delete obj.lastName
          return obj;
-      })
+      });
       return arrayObj
    }
 };

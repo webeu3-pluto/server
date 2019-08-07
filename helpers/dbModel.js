@@ -40,6 +40,7 @@ module.exports = {
          .where('us.email', teamleadEmail)
          .groupBy('sq.student_id');
    },
+
    getStudentTeamleads: function (studentEmail) {
       return db('teamleadStudents as ts')
          .select('u.id', 'u.firstName', 'u.lastName')

@@ -6,7 +6,7 @@ const { modifier } = require('../helpers/middlware');
 router.get('/students/data', async (req, res) => {
    try {
       const token = req.decodedToken;
-      const students = await Users.getTeamleadStudents(token.email)
+      const students = await Users.getTeamleadStudents(token.email);
       const studentsMod = modifier(students);
       res.status(200).json(studentsMod);
    } catch (error) {
@@ -19,7 +19,7 @@ router.get('/summary', async (req, res) => {
       const token = req.decodedToken;
       const students = await Users.getTeamleadStudents(token.email);
       const { quizzesCreated } = await Users.getTeamleadQuizCount(token.email);
-      const [values] = await Users.getTeamleadCompletions(token.email)
+      const [values] = await Users.getTeamleadCompletions(token.email);
       res.status(200).json({
          students: students.length,
          quizzesCreated,
@@ -38,10 +38,10 @@ router.post('/students', async (req, res) => {
       await Users.insertTeamleadStudent({
          teamlead_id: teamlead.id,
          student_id: req.body.id
-      })
+      });
       res.status(201).json({
          message: 'New entry successfully created!'
-      })
+      });
    } catch (error) {
       res.status(500).json({ message: error.message });
    }
@@ -55,12 +55,12 @@ router.delete('/students', async (req, res) => {
          teamlead_id: teamlead.id,
          student_id: req.body.id
       });
-      const students = await Users.getTeamleadStudents(token.email)
-      const studentsMod = modifier(students)
+      const students = await Users.getTeamleadStudents(token.email);
+      const studentsMod = modifier(students);
       res.status(200).json({
          message: 'Student has been successfully removed from your list',
          students: studentsMod
-      })
+      });
    } catch (error) {
       res.status(500).json({ message: error.message });
    }
