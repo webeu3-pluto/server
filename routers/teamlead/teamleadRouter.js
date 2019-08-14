@@ -1,7 +1,8 @@
 const router = require('express').Router();
 
-const Users = require('../helpers/dbModel');
-const { modifier } = require('../helpers/middlware');
+const Users = require('../../helpers/dbModel');
+const { modifier } = require('../../helpers/middlware');
+const { newEntry, entryRemoved } = require('../../helpers/variables');
 
 router.get('/students/data', async (req, res) => {
    try {
@@ -40,7 +41,7 @@ router.post('/students', async (req, res) => {
          student_id: req.body.id
       });
       res.status(201).json({
-         message: 'New entry successfully created!'
+         message: newEntry
       });
    } catch (error) {
       res.status(500).json({ message: error.message });
@@ -58,7 +59,7 @@ router.delete('/students', async (req, res) => {
       const students = await Users.getTeamleadStudents(token.email);
       const studentsMod = modifier(students);
       res.status(200).json({
-         message: 'Student has been successfully removed from your list',
+         message: entryRemoved('Student'),
          students: studentsMod
       });
    } catch (error) {

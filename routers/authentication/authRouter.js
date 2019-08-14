@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 
-const Users = require('../helpers/dbModel');
+const Users = require('../../helpers/dbModel');
+const { errorMessage, regWelcome, loginWelcome } = require('../../helpers/variables');
 
 router.post('/register', async (req, res) => {
    const { password } = req.body;
@@ -10,10 +11,10 @@ router.post('/register', async (req, res) => {
    req.body.password = hashed;
    try {
       const { id, firstName, lastName, email, role, cohort } = await Users.insertUser(req.body);
-      res.status(201).json({ message: `Hooray! Welcome Aboard, ${firstName}!!`, id, firstName, lastName, email, role, cohort, token });
+      res.status(201).json({ message: regWelcome(firstName), id, firstName, lastName, email, role, cohort, token });
    }
    catch (error) {
-      res.status(500).json('Oops! We missed that. Hang on, let\'s fix it together');
+      res.status(500).json(errorMessage);
    };
 });
 
@@ -21,9 +22,9 @@ router.post('/login', (req, res) => {
    try {
       const token = req.token;
       const { id, firstName, lastName, email, role, cohort } = req.user;
-      res.status(200).json({ message: `Welcome ${firstName}!`, id, firstName, lastName, email, role, cohort, token });
+      res.status(200).json({ message: loginWelcome(firstName), id, firstName, lastName, email, role, cohort, token });
    } catch (error) {
-      res.status(500).json('Oops! We missed that. Hang on, let\'s fix it together');
+      res.status(500).json(errorMessage);
    };
 });
 
