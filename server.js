@@ -9,14 +9,14 @@ const cohortRouter = require('./routers/cohort/cohortRouter');
 const teamleadRouter = require('./routers/teamlead/teamleadRouter');
 const studentRouter = require('./routers/student/studentRouter');
 const quizzesRouter = require('./routers/quizzes');
-const { validateUser, restrict } = require('./helpers/middlware');
+const { validateBody, validateEmail, validateUser, restrict } = require('./helpers/middlware');
 const { welcomeMessage, errorMessage } = require('./helpers/variables');
 
 server.use(express.json());
 server.use(helmet());
 server.use(cors());
 
-server.use('/api/auth', validateUser, authRouter);
+server.use('/api/auth', validateBody, validateEmail, validateUser, authRouter);
 server.use('/api/profile', restrict, profileRouter);
 server.use('/api/cohort', restrict, cohortRouter);
 server.use('/api/teamlead', restrict, teamleadRouter);
