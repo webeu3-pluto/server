@@ -7,7 +7,7 @@ const { newEntry, entryRemoved } = require('../../helpers/variables');
 router.get('/teamleads/data', async (req, res) => {
    try {
       const token = req.decodedToken;
-      const teamleads = await Users.getStudentTeamleads(token.email);
+      const teamleads = await Users.getStudentTeamleads(token.sub);
       const teamleadsMod = modifier(teamleads);
       res.status(200).json(teamleadsMod);
    } catch (error) {
@@ -18,9 +18,9 @@ router.get('/teamleads/data', async (req, res) => {
 router.get('/summary', async (req, res) => {
    try {
       const token = req.decodedToken;
-      const teamleads = await Users.getStudentTeamleads(token.email);
-      const { quizzesCreated } = await Users.getStudentTeamleadQuizCount(token.email);
-      const [values] = await Users.getStudentCompletions(token.email);
+      const teamleads = await Users.getStudentTeamleads(token.sub);
+      const { quizzesCreated } = await Users.getStudentTeamleadQuizCount(token.sub);
+      const [values] = await Users.getStudentCompletions(token.sub);
       res.status(200).json({
          teamleads: teamleads.length,
          quizzesCreated,
@@ -35,7 +35,7 @@ router.get('/summary', async (req, res) => {
 router.post('/teamleads', async (req, res) => {
    try {
       const token = req.decodedToken;
-      const student = await Users.getUserByEmail(token.email);
+      const student = await Users.getUserById(token.sub);
       await Users.insertTeamleadStudent({
          student_id: student.id,
          teamlead_id: req.body.id
@@ -51,12 +51,12 @@ router.post('/teamleads', async (req, res) => {
 router.delete('/teamleads', async (req, res) => {
    try {
       const token = req.decodedToken;
-      const student = await Users.getUserByEmail(token.email);
+      const student = await Users.getUserById(token.sub);
       await Users.deleteTeamleadStudent({
          student_id: student.id,
          teamlead_id: req.body.id
       });
-      const teamleads = await Users.getStudentTeamleads(token.email);
+      const teamleads = await Users.getStudentTeamleads(token.sub);
       const teamleadsMod = modifier(teamleads);
       res.status(200).json({
          message: entryRemoved('Teamlead'),
