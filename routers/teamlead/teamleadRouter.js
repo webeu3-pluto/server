@@ -1,12 +1,13 @@
 const router = require('express').Router();
 
-const Users = require('../helpers/dbModel');
-const { modifier } = require('../helpers/middlware');
+const Users = require('../../helpers/dbModel');
+const { modifier } = require('../../helpers/middlware');
+const { newEntry, entryRemoved } = require('../../helpers/variables');
 
 router.get('/students/data', async (req, res) => {
    try {
       const token = req.decodedToken;
-      const students = await Users.getTeamleadStudents(token.email);
+      const students = await Users.getTeamleadStudents(token.sub);
       const studentsMod = modifier(students);
       res.status(200).json(studentsMod);
    } catch (error) {
@@ -17,9 +18,9 @@ router.get('/students/data', async (req, res) => {
 router.get('/summary', async (req, res) => {
    try {
       const token = req.decodedToken;
-      const students = await Users.getTeamleadStudents(token.email);
-      const { quizzesCreated } = await Users.getTeamleadQuizCount(token.email);
-      const [values] = await Users.getTeamleadCompletions(token.email);
+      const students = await Users.getTeamleadStudents(token.sub);
+      const { quizzesCreated } = await Users.getTeamleadQuizCount(token.sub);
+      const [values] = await Users.getTeamleadCompletions(token.sub);
       res.status(200).json({
          students: students.length,
          quizzesCreated,
@@ -34,13 +35,13 @@ router.get('/summary', async (req, res) => {
 router.post('/students', async (req, res) => {
    try {
       const token = req.decodedToken;
-      const teamlead = await Users.getUserByEmail(token.email);
+      const teamlead = await Users.getUserById(token.sub);
       await Users.insertTeamleadStudent({
          teamlead_id: teamlead.id,
          student_id: req.body.id
       });
       res.status(201).json({
-         message: 'New entry successfully created!'
+         message: newEntry
       });
    } catch (error) {
       res.status(500).json({ message: error.message });
@@ -50,15 +51,15 @@ router.post('/students', async (req, res) => {
 router.delete('/students', async (req, res) => {
    try {
       const token = req.decodedToken;
-      const teamlead = await Users.getUserByEmail(token.email);
+      const teamlead = await Users.getUserById(token.sub);
       await Users.deleteTeamleadStudent({
          teamlead_id: teamlead.id,
          student_id: req.body.id
       });
-      const students = await Users.getTeamleadStudents(token.email);
+      const students = await Users.getTeamleadStudents(token.sub);
       const studentsMod = modifier(students);
       res.status(200).json({
-         message: 'Student has been successfully removed from your list',
+         message: entryRemoved('Student'),
          students: studentsMod
       });
    } catch (error) {

@@ -29,7 +29,7 @@ module.exports = {
          });
    },
 
-   getTeamleadStudents: function (teamleadEmail) {
+   getTeamleadStudents: function (teamleadId) {
       return db('teamleadStudents as ts')
          .select('u.id', 'u.firstName', 'u.lastName')
          .sum('completed', { as: 'quizzes' })
@@ -37,11 +37,11 @@ module.exports = {
          .leftJoin('users as u', 'u.id', 'ts.student_id')
          .leftJoin('users as us', 'us.id', 'ts.teamlead_id')
          .leftJoin('studentQuiz as sq', 'u.id', 'sq.student_id')
-         .where('us.email', teamleadEmail)
-         .groupBy('sq.student_id');
+         .where('us.id', teamleadId)
+         .groupBy('ts.student_id');
    },
 
-   getStudentTeamleads: function (studentEmail) {
+   getStudentTeamleads: function (studentId) {
       return db('teamleadStudents as ts')
          .select('u.id', 'u.firstName', 'u.lastName')
          .countDistinct('q.id', { as: 'quizzes' })
@@ -50,39 +50,36 @@ module.exports = {
          .leftJoin('users as us', 'us.id', 'ts.student_id')
          .leftJoin('quiz as q', 'q.teamlead_id', 'ts.teamlead_id')
          .leftJoin('studentQuiz as sq', 'sq.quiz_id', 'q.id')
-         .where({
-            'us.email': studentEmail,
-            'published': 1
-         })
-         .groupBy('ts.teamlead_id');
+         .where('us.id', studentId)
+         .groupBy('u.id');
    },
 
-   getTeamleadQuizCount: function (teamleadEmail) {
+   getTeamleadQuizCount: function (teamleadId) {
       return db('quiz as q')
          .countDistinct('q.id', { as: 'quizzesCreated' })
          .leftJoin('users as u', 'u.id', 'q.teamlead_id')
          .where({
-            'u.email': teamleadEmail,
+            'u.id': teamleadId,
             'published': 1
          })
          .first();
    },
 
-   getStudentTeamleadQuizCount: function (studentEmail) {
+   getStudentTeamleadQuizCount: function (studentId) {
       return db('teamleadStudents as ts')
          .count('q.id', { as: 'quizzesCreated' })
          .leftJoin('users as u', 'u.id', 'ts.student_id')
          .leftJoin('users as us', 'us.id', 'ts.teamlead_id')
          .leftJoin('quiz as q', 'q.teamlead_id', 'ts.teamlead_id')
          .where({
-            'u.email': studentEmail,
+            'u.id': studentId,
             'published': 1
          })
          .first();
 
    },
 
-   getTeamleadCompletions: function (teamleadEmail) {
+   getTeamleadCompletions: function (teamleadId) {
       return db.raw(`
          select sum(completed) as submitted,
          count(published) as total,
@@ -95,12 +92,12 @@ module.exports = {
          left join studentQuiz as sq
          on sq.student_id = ts.student_id
          AND q.id = sq.quiz_id
-         where u.email = '${teamleadEmail}'
+         where u.id = '${teamleadId}'
          and published = 1
       `)
    },
 
-   getStudentCompletions: function (studentEmail) {
+   getStudentCompletions: function (studentId) {
       return db.raw(`
          select sum(completed) as submitted,
          count(published) as total,
@@ -115,7 +112,7 @@ module.exports = {
          left join studentQuiz as sq
          on sq.student_id = ts.student_id
          AND q.id = sq.quiz_id
-         where u.email = '${studentEmail}'
+         where u.id = '${studentId}'
          and published = 1
       `)
    },
@@ -144,18 +141,18 @@ module.exports = {
          .insert(user);
    },
 
-   updateUser: function (email, changes) {
+   updateUser: function (id, changes) {
       return db('users')
-         .where({ email })
+         .where({ id })
          .update(changes)
          .then(() => {
-            return this.getUserByEmail(email);
+            return this.getUserById(id);
          });
    },
 
-   deleteUser: function (email) {
+   deleteUser: function (id) {
       return db('users')
-         .where({ email })
+         .where({ id })
          .del();
    },
 

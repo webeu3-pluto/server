@@ -3,19 +3,20 @@ const helmet = require('helmet');
 const cors = require('cors');
 
 const server = express();
-const authRouter = require('./authentication/authRouter');
-const profileRouter = require('./profile/profileRouter');
-const cohortRouter = require('./cohort/cohortRouter');
-const teamleadRouter = require('./teamlead/teamleadRouter');
-const studentRouter = require('./student/studentRouter');
-const quizzesRouter = require('./quizzes');
-const { validateUser, restrict } = require('./helpers/middlware');
+const authRouter = require('./routers/authentication/authRouter');
+const profileRouter = require('./routers/profile/profileRouter');
+const cohortRouter = require('./routers/cohort/cohortRouter');
+const teamleadRouter = require('./routers/teamlead/teamleadRouter');
+const studentRouter = require('./routers/student/studentRouter');
+const quizzesRouter = require('./routers/quizzes');
+const { validateBody, validateEmail, validateUser, restrict } = require('./helpers/middlware');
+const { welcomeMessage, errorMessage } = require('./helpers/variables');
 
 server.use(express.json());
 server.use(helmet());
 server.use(cors());
 
-server.use('/api/auth', validateUser, authRouter);
+server.use('/api/auth', validateBody, validateEmail, validateUser, authRouter);
 server.use('/api/profile', restrict, profileRouter);
 server.use('/api/cohort', restrict, cohortRouter);
 server.use('/api/teamlead', restrict, teamleadRouter);
@@ -24,9 +25,9 @@ server.use('/api/quizzes', restrict, quizzesRouter);
 
 server.get('/', (req, res) => {
    try {
-      res.status(200).send(`<h2>Welcome to Pluto API!!</h2>`);
+      res.status(200).send(welcomeMessage);
    } catch (error) {
-      res.status(500).json('Oops! We missed that. Hang on, let\'s fix it together');
+      res.status(500).json(errorMessage);
    }
 });
 
