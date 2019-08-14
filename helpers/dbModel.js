@@ -38,7 +38,7 @@ module.exports = {
          .leftJoin('users as us', 'us.id', 'ts.teamlead_id')
          .leftJoin('studentQuiz as sq', 'u.id', 'sq.student_id')
          .where('us.email', teamleadEmail)
-         .groupBy('sq.student_id');
+         .groupBy('ts.student_id');
    },
 
    getStudentTeamleads: function (studentEmail) {
