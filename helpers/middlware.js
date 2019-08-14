@@ -2,6 +2,7 @@ const Users = require('../helpers/dbModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secret = require('../config/secrets');
+const v = require('./variables');
 
 module.exports = {
    validateUser: async function (req, res, next) {
@@ -16,7 +17,7 @@ module.exports = {
                next();
             }
             else {
-               res.status(403).json({ message: 'Email already in use' });
+               res.status(403).json({ message: v.alreadyInUse });
             };
          } else if (email && password && req.path === "/login") {
             if (user && bcrypt.compareSync(password, user.password)) {
@@ -25,13 +26,13 @@ module.exports = {
                req.token = token;
                next();
             } else {
-               res.status(401).json({ message: 'Oops! Invalid Credentials' });
+               res.status(401).json({ message: v.invalid });
             };
          } else {
-            res.status(400).json({ message: 'You are missing some required fields!' });
+            res.status(400).json({ message: v.missingFields });
          };
       } else {
-         res.status(400).json({ message: 'Please supply user data!' });
+         res.status(400).json({ message: v.noUserData });
       };
    },
    restrict: function (req, res, next) {
@@ -39,14 +40,14 @@ module.exports = {
       if (token) {
          jwt.verify(token, secret.jwtSecret, (err, decodedToken) => {
             if (err) {
-               res.status(401).json({ message: 'Token validation failed!' });
+               res.status(401).json({ message: v.tokenInvalid });
             } else {
                req.decodedToken = decodedToken;
                next();
             }
          })
       } else {
-         res.status(400).json({ message: 'Please supply token!' });
+         res.status(400).json({ message: v.supplyToken });
       };
    },
 
