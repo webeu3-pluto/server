@@ -1,7 +1,7 @@
 const Quizzes = require("./model");
 
 module.exports = {
-  getQuizByTeamLead: async function(id) {
+  getQuizByTeamLead: async function (id) {
     const quizzes = await Quizzes.getQuizzesByTeamLeadID(id);
     const formattedQuizzes = quizzes.map(quiz => {
       if (quiz.score === null) quiz.score = 0;
@@ -19,7 +19,7 @@ module.exports = {
     });
     return formattedQuizzes;
   },
-  getQuizzesByStudentId: async function(id) {
+  getQuizzesByStudentId: async function (id) {
     const quizzes = await Quizzes.findQuizzesByStudentId(id);
     const formattedQuizzes = quizzes.map(quiz => {
       if (quiz.score === null) quiz.score = 0;

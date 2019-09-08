@@ -1,7 +1,7 @@
 const db = require("../../../config/dbConfig");
 
 module.exports = {
-  getQuizByUUID: function(uuid) {
+  getQuizByUUID: function (uuid) {
     return db
       .from("quiz")
       .join("categories", "categories.id", "quiz.cat_id")
@@ -18,7 +18,7 @@ module.exports = {
       )
       .first();
   },
-  getQuestionsByUUID: function(uuid) {
+  getQuestionsByUUID: function (uuid) {
     return db
       .from("quiz")
       .join("questionAnswers", "questionAnswers.quiz_id", "quiz.id")
@@ -32,52 +32,54 @@ module.exports = {
       )
       .where({ uuid });
   },
-  getQuestionByID: function(id) {
+  getQuestionByID: function (id) {
     return db("questionAnswers").where({ id });
   },
-  createQuiz: function(quiz) {
+  createQuiz: function (quiz) {
     return db("quiz")
       .insert(quiz)
+      .returning("id")
       .then(([id]) => id);
   },
-  createQuestion: function(question) {
+  createQuestion: function (question) {
     return db("questionAnswers")
       .insert(question)
+      .returning("id")
       .then(([id]) => this.getQuestionByID(id));
   },
-  getCategories: function() {
+  getCategories: function () {
     return db("categories").select("id as categoryId", "name as category");
   },
-  getSubcatsByCategory: function(id) {
+  getSubcatsByCategory: function (id) {
     return db("subcategories")
       .where({ cat_id: id })
       .select("id as subCategoryId", "name as subCategoryName");
   },
-  updateCatAndSubcatForQuiz: function(cat_id, subcat_id, uuid) {
+  updateCatAndSubcatForQuiz: function (cat_id, subcat_id, uuid) {
     return db("quiz")
       .where({ uuid })
       .update({ cat_id, subcat_id })
       .then(() => this.getQuizByUUID(uuid));
   },
-  updateStatusOfQuiz: function(published, uuid) {
+  updateStatusOfQuiz: function (published, uuid) {
     return db("quiz")
       .where({ uuid })
       .update({ published })
       .then(() => this.getQuizByUUID(uuid));
   },
-  deleteQuizQuestion: function(id, uuid) {
+  deleteQuizQuestion: function (id, uuid) {
     return db("questionAnswers")
       .where({ id })
       .del()
       .then(() => this.getQuestionsByUUID(uuid));
   },
-  updateQuizQuestion: function(question, id, uuid) {
+  updateQuizQuestion: function (question, id, uuid) {
     return db("questionAnswers")
       .where({ id })
       .update(question)
       .then(() => this.getQuestionsByUUID(uuid));
   },
-  deleteQuizByUUID: function(uuid) {
+  deleteQuizByUUID: function (uuid) {
     return db("quiz")
       .where({ uuid })
       .del();

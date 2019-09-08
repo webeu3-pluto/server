@@ -131,6 +131,7 @@ module.exports = {
    insertUser: function (user) {
       return db('users')
          .insert(user)
+         .returning("id")
          .then(([id]) => {
             return this.getUserById(id);
          });

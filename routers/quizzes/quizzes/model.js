@@ -1,7 +1,7 @@
 const db = require("../../../config/dbConfig");
 
 module.exports = {
-  getQuizzesByTeamLeadID: function(id) {
+  getQuizzesByTeamLeadID: function (id) {
     return db.raw(`
     SELECT 
       uuid,
@@ -19,7 +19,7 @@ module.exports = {
     GROUP BY uuid
     `);
   },
-  findQuizzesByStudentId: function(id) {
+  findQuizzesByStudentId: function (id) {
     return db.raw(`
     SELECT
       uuid,
@@ -44,28 +44,3 @@ module.exports = {
 `)
   },
 };
-
-
-/*
-SELECT
-    uuid,
-    quiz.id as quizId,
-    subcategories.name as quiz,
-    firstName,
-    lastName,
-    studentQuiz.result as score,
-    studentQuiz.completed as status
-FROM teamleadStudents
-JOIN quiz
-ON quiz.teamlead_id = teamleadStudents.teamlead_id
-LEFT JOIN studentQuiz
-ON studentQuiz.student_id = teamleadStudents.student_id
-JOIN subcategories
-ON subcategories.id = subcat_id
-LEFT JOIN users
-ON users.id = teamleadStudents.teamlead_id
-WHERE teamleadStudents.student_id = 28
-
-ON studentQuiz.quiz_id = quiz.id
-
-*/
